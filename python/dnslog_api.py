@@ -13,21 +13,22 @@ class dnslog:
 
         # 获取二级域名
         self._dnssubdomain = self._dns.get(self._get_dns_domain_api).text
+
         # 标志信息
         self._msg = 'dnstest'
 
-    def getrecords(self):
+    def check(self):
         """检测是否有dns请求"""
         result = self._dns.get(self._get_dns_record_api,
                                headers=self._headers).text
-        print(result)
+
         if self._msg in result:
             return True
         else:
             return False
 
     def get_dns_request(self):
-        """获取请求的子域名，三级域名"""
+        """获取请求的子域名"""
         return 'http://'+self._msg+'.'+self._dnssubdomain
 
     def setmsg(self, msg):
@@ -39,5 +40,7 @@ class dnslog:
         try:
             self._dns.get('http://'+self._msg+'.' +
                           self._dnssubdomain, headers=self._headers)
+            print('[+] send succeed!')
         except Exception as e:
+            print(e)
             pass
